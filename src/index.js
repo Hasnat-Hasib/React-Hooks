@@ -1,30 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useReducer } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 
 function App (){
-  const [data, setData] = useState([]);
+  const [number, setNumber] = useReducer((number, newNumber) => number + newNumber, 0);
+ 
+  return (
+    
+    <h1 onClick={() => setNumber(1)}>{number}</h1>
+    
+  );
 
-  useEffect(() => {
-    fetch(`https://api.github.com/users`)
-    .then((response) => response.json())
-    .then(setData)
-  }, []); //if we dont declare dependency array then remove data button will not work. because useEffect function will be called every render of the fuction.
-
- if (data) {
-   return (
-    <div>
-    <ul>
-      {data.map((user) =>(
-        <li key={user.id}>{user.login}</li>
-      ))}
-    </ul> 
-    <button onClick={() => setData([])}> Remove Data</button> 
-    </div> 
-   );
- }
+  console.log(number);
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
