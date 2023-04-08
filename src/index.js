@@ -1,38 +1,28 @@
-import React, { useReducer } from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
-const initialState = {
-  message: "hi"
-}
 
-//reducer fuction takes in the state and an action and returns a new state. We have the access to previous state. 
-// if our new state relies on the old state this pattern is very useful.
-function reducer(state, action){
-  switch(action.type){
-    case "yell":
-      return {
-        message: `HEY!! I just said ${state.message}`
-      }
-    case "whisper":
-      return {
-        message: `excuse me !! I just said ${state.message}`
-      }
-  }
-}
 
 function App (){
-  const [state, dispatch] = useReducer(
-    reducer,
-    initialState
-    );
+  const sound = useRef();
+  const color = useRef();
+  const submit = (e) => {
+    e.preventDefault();
+    const soundVal = sound.current.value; //.current.value provided by useRef function.
+    const colordVal = color.current.value;
+    alert(`${soundVal} sounds like ${colordVal}`);
+    sound.current.value = "";
+    color.current.value = "";
 
+  };
+ 
   return (
-    <>
-      <p>Message: {state.message}</p>
-      <button onClick={() => dispatch({type: "yell"})}>YELL</button>
-      <button onClick={() => dispatch({type: "whisper"})}>Whisper</button>
-    </>
+    <form onSubmit={submit} action="">
+      <input ref={sound} type="text" placeholder='Sound...' />
+      <input ref={color} type="color" />
+      <button>Add</button>
+    </form>
   )
 }
 
