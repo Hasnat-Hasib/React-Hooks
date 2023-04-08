@@ -2,17 +2,37 @@ import React, { useReducer } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
+const initialState = {
+  message: "hi"
+}
+
+//reducer fuction takes in the state and an action and returns a new state. We have the access to previous state. 
+// if our new state relies on the old state this pattern is very useful.
+function reducer(state, action){
+  switch(action.type){
+    case "yell":
+      return {
+        message: `HEY!! I just said ${state.message}`
+      }
+    case "whisper":
+      return {
+        message: `excuse me !! I just said ${state.message}`
+      }
+  }
+}
+
 function App (){
-  const [checked, toggle] = useReducer((checked) => !checked, false);
+  const [state, dispatch] = useReducer(
+    reducer,
+    initialState
+    );
 
   return (
-    <div>
-      
-      <input type="checkbox"
-      value={checked}
-      onChange={toggle} />
-      <p>{checked ? "checked": "not checked"}</p>
-    </div>
+    <>
+      <p>Message: {state.message}</p>
+      <button onClick={() => dispatch({type: "yell"})}>YELL</button>
+      <button onClick={() => dispatch({type: "whisper"})}>Whisper</button>
+    </>
   )
 }
 
